@@ -5,6 +5,13 @@ export default function TransactionsPage() {
   const [transactions, setTransactions] = useState([])
   const [search, setSearch] = useState("")
   const [loading, setLoading] = useState(true)
+  const CATEGORIES = ["Food","Travel","Shopping","Subscriptions","Bills","Entertainment","Health","Investment","Other"]
+
+  async function updateCategory(id, newCategory) {
+    await supabase.from("transactions").update({ category: newCategory }).eq("id", id)
+    setTransactions(prev => prev.map(t => t.id === id ? {...t, category: newCategory} : t))
+  }
+
 
   useEffect(() => {
     async function fetchTransactions() {
@@ -47,7 +54,16 @@ export default function TransactionsPage() {
                 <td className="px-4 py-3 text-gray-500">{t.transaction_date}</td>
                 <td className="px-4 py-3 text-gray-900">{t.merchant}</td>
                 <td className="px-4 py-3">
-                  <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">{t.category}</span>
+                  <td className="px-4 py-3">
+                  <select
+                    value={t.category}
+                    onChange={e => updateCategory(t.id, e.target.value)}
+                    className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full border-0 cursor-pointer"
+                  >
+                    {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </td>
+
                 </td>
                 <td className={`px-4 py-3 text-right font-medium ${t.transaction_type === "credit" ? "text-green-600" : "text-red-500"}`}>
                   {t.transaction_type === "credit" ? "+" : "-"}₹{t.amount.toLocaleString()}
