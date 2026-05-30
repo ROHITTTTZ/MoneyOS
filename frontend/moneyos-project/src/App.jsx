@@ -6,6 +6,8 @@ import DashboardPage from "./pages/DashboardPage"
 import UploadPage from "./pages/UploadPage"
 import TransactionsPage from "./pages/TransactionsPage"
 import Layout from "./components/Layout"
+import CopilotPage from "./pages/CopilotPage"
+import GoalsPage from "./pages/GoalsPage"
 
 function App() {
   const { user, loading } = useAuth()
@@ -19,6 +21,8 @@ function App() {
           <Route path="/" element={<DashboardPage />} />
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/transactions" element={<TransactionsPage />} />
+          <Route path="/goals" element={<GoalsPage />} />
+          <Route path="/copilot" element={<CopilotPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>
